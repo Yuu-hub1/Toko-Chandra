@@ -1,7 +1,68 @@
 import tobaccos from '@/assets/tobaccos.webp'
 import kites from '@/assets/kites.webp'
+import { useEffect, useState } from 'react';
 
 export default function LandingPage() {
+
+    const [tampil, setTampil] = useState(false);
+    const [nama, setNama] = useState("");
+    const [barang, setBarang] = useState(['Apel', 'Susu']);
+
+    const [qtyN, setQtyN] = useState(0);
+    const [qtyS, setQtyS] = useState(0);
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleUsername = (event) => { 
+      setUsername(event.target.value);
+    };
+    const handlePassword = (event) => {
+      setPassword(event.target.value);
+    };
+    
+    const isUsernameValid = username.length >= 5;
+    const isPasswordValid = /\d/.test(password);
+
+    const isFormValid = isUsernameValid && isPasswordValid;
+
+
+    const addQtyN = () => {
+      setQtyN(qtyN + 1)
+    };
+    
+    const deleteQtyN = () => {
+      if (!qtyN == 0) {
+        setQtyN(qtyN - 1)
+      }
+    };
+    
+    const addQtyS = () => {
+      setQtyS(qtyS + 1)
+    };
+    const deleteQtyS = () => {
+      if (!qtyS == 0) {
+        setQtyS(qtyS - 1)
+      }
+    };
+    const handleReset = () => {
+      setQtyN(0)
+      setQtyS(0)
+    };
+
+
+    const handleTampil = () => {
+      setTampil(!tampil)
+    };
+
+    const handleNama = (event) => {
+      setNama(event.target.value);
+    };
+
+    const handleInput = (baru) => {
+      setNama([...barang, baru.target.value]);
+    };
+
      const produkTerbaru = [
     { nama: "Tembakau Rajangan Super", kategori: "Tembakau", harga: "Rp 45.000" },
     { nama: "Layangan Aduan Klasik", kategori: "Layangan", harga: "Rp 15.000" },
@@ -29,6 +90,7 @@ export default function LandingPage() {
       deskripsi: "Pelanggan setia dan pembelian dalam jumlah tertentu berpeluang dapat potongan harga.",
     },
   ];
+
     return (
         <div className="text-center my-10">
         <h2>TOKO LAYANGAN DAN TEMBAKAU</h2>
@@ -38,6 +100,86 @@ export default function LandingPage() {
                 <a href="/login" className="border border-abu text-abu px-4 py-2 rounded-md">Lihat Produk</a>
                 <a href="/login" className="bg-abu text-white px-4 py-2 rounded-md">Selengkapnya</a>
             </div>
+
+
+            <p>
+              <span>Rahasia :</span>
+              {tampil ? <span className="">Mantap</span> : <span className="hidden">Mantap</span>}
+            </p>
+
+            <button className='bg-black text-white rounded p-1' onClick={handleTampil}>
+              {tampil ? 'Sembunyikan' : 'Tampilkan'}
+            </button>
+
+            <form >
+              <input type="text" className='border mt-2 rounded' onChange={handleNama} value={nama} />
+            </form>
+
+            <span>Selamat Datang { nama ? nama : ""} </span>
+
+            <h1 className='font-bold'>Daftar Barang</h1>
+            {barang.map( (item) => (
+              <ul>
+                <li>{item}</li>
+              </ul>
+            ))}
+
+            <table className='rounded w-1/2 mx-auto mt-5 border border-black'>
+              <tr className='bg-black rounded text-white '>
+                <th>Menu</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
+                <th>Total Harga</th>
+                <th>Aksi</th>
+              </tr>
+              <tr>
+                <td className='border border-black p-1'>Nasgor</td>
+                <td className='border border-black p-1'>Rp. 20.000,00</td>
+                <td className='border border-black p-1'>{ qtyN }</td>
+                <td className='border border-black p-1'>{ qtyN * 20000}</td>
+                <td className='gap-2 flex p-1'>
+                  <button className='bg-slate-700 px-2 py-1 rounded' onClick={addQtyN} >Tambah</button>
+                  <button className='px-2 py-1 rounded border' onClick={deleteQtyN} >Hapus</button>
+                </td>
+              </tr>
+              <tr>
+                <td className='border border-black p-1'>Es teh</td>
+                <td className='border border-black p-1'>Rp. 5.000,00</td>
+                <td className='border border-black p-1'>{ qtyS }</td>
+                <td className='border border-black p-1'>{ qtyS * 5000}</td>
+                <td className='gap-2 flex p-1'>
+                  <button className='bg-slate-700 px-2 py-1 rounded' onClick={addQtyS} >Tambah</button>
+                  <button className='px-2 py-1 rounded border' onClick={deleteQtyS} >Hapus</button>
+                </td>
+              </tr>
+            </table>
+            <button className='bg-black text-white p-2' onClick={handleReset}>Reset</button>
+
+          <form className='flex flex-col gap-2 w-1/2 mx-auto my-5'>
+            <input type="text" className='border border-black rounded p-1' placeholder='Username' onChange={handleUsername} value={username} 
+            />
+            <span className='text-red-700 text-sm h-5'>
+              {username.length > 0 && !isUsernameValid ? "Username terlalu pendek (minimal 5 karakter)!" : ""}
+            </span>
+
+            <input type="password" className='border border-black rounded p-1' placeholder='Password' onChange={handlePassword} value={password} 
+            />
+            <span className='text-red-700 text-sm h-5'>
+              {password.length > 0 && !isPasswordValid ? "Password wajib mengandung angka!" : ""}
+            </span>
+
+            <button 
+              type="submit"
+              disabled={!isFormValid}
+              className={`p-2 rounded text-white font-bold transition-all ${
+                isFormValid ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Daftar Akun
+            </button>
+          </form>
+
+
             <div className="mt-52">
             <h1 className='text-center font-semibold text-4xl'>KATEGORI UNGGULAN</h1>
             <h2>Kami mejual berbagai macam layangan dan tembakau berkualitas tinggi.</h2>
