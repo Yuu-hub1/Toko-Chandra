@@ -1,12 +1,1 @@
 @import "tailwindcss";
-
-
-@theme {
-  --color-putih: #E9E9E9;
-  --color-abu: #222222;
-  
-  --spacing-a: 40%;
-  --font-Poppins: "Poppins", sans-serif;
-  --font-size-huge: 5rem;
-  --breakpoint-xs: 0rem;
-}
