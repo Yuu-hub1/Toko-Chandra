@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export function BelajarPage() {
     const [isDarkMode, setIsDarkMode ] = useState(false);
@@ -51,6 +52,7 @@ export function BelajarPage() {
     
     return (
         <>
+        <Link to="/" className="bg-abu">Beranda</Link>
         <button className={`rounded px-2 py-1 ${isDarkMode === false ? `bg-white text-black` : `bg-black text-white` } `} onClick={handleChange}>
             Ubah
         </button>
